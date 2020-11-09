@@ -2,7 +2,7 @@
 :long_name: ICIJ FinCEN Files
 :description: From RDBMS to Graph, using a classic retail dataset
 :icon: 
-:logo: documentation/img/fincen-files-logo.jpg
+:logo: documentation/img/fincen-files-logo.png
 :tags: investigations,finance,fraud,money-laundering
 :author: Michael Hunger
 :use-load-script: scripts/fincen-import.cypher
