@@ -28,7 +28,7 @@
 
 :model-guide:
 :todo: 
-image::{logo}[]
+image::{logo}[width=128]
 
 = {long_name} Graph Example
 
