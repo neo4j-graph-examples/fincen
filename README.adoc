@@ -1,0 +1,81 @@
+:name: fincen
+:long_name: ICIJ FinCEN Files
+:description: From RDBMS to Graph, using a classic retail dataset
+:icon: 
+:logo: documentation/img/fincen-files-logo.jpg
+:tags: investigations,finance,fraud,money-laundering
+:author: Michael Hunger
+:use-load-script: scripts/fincen-import.cypher
+:data: import/*.csv
+:use-dump-file: data/fincen-40.dump
+:use-plugin: 
+:target-db-version: 3.5,4.0
+:bloom-perspective: bloom/fincen.bloom-perspective
+:guide: documentation/guide.adoc
+:rendered-guide: https://guides.neo4j.com/sandbox/fincen/index.html
+:model: documentation/img/fincen-datamodel.png
+:example: documentation/img/biggest-filings-browser.png
+
+:query: MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country}) +
+ WITH from, to, round(sum(f.amount)) as sum +
+ ORDER BY sum DESC LIMIT 10 +
+ RETURN from.name as originator +
+ 
+:param-name: country
+:param-value: Russia
+:result-column: originator
+:expected-result: Deutsche Bank
+
+:model-guide:
+:todo: 
+image::{logo}[]
+
+= {long_name} Graph Example
+
+Description: _{description}_
+
+.Model
+image::{model}[]
+
+.Example
+image::{example}[width=600]
+
+.Example Query:
+[source,cypher,subs=attributes]
+----
+{query}
+----
+
+=== Articles
+
+The ICIJ published a https://www.icij.org/investigations/fincen-files/[whole investigation^] about the FinCEN Files.
+
+We are https://neo4j.com/blog/analyzing-fincen-files-data-neo4j/[exploring the data in Neo4j in this article^].
+
+You can access the https://sandbox.neo4j.com?usecase=fincen[Neo4j Sandbox^].
+
+There is a https://youtu.be/xpTYr0Qz7x0[recording^] about exploring the Data and applying Graph Data Science methods.
+
+=== Setup
+
+This is for Neo4j version: `{target-db-version}`
+
+The database is also available on https://demo.neo4jlabs.com:7473
+
+Username "fincen", password: "fincen", database: "fincen"
+
+Rendered guide available from: `:play {rendered-guide}`
+
+Import Script: `cypher-shell -a <address> -u neo4j -p <password> -f {use-load-script}`
+
+Unrendered guide: link:{guide}[]
+
+Data files: `{data}`
+
+=== Code Examples
+
+* link:code/javascript/example.js[JavaScript]
+* link:code/java/Example.java[Java]
+* link:code/csharp/Example.cs[C#]
+* link:code/python/example.py[Python]
+* link:code/go/example.go[Go]
