@@ -1,17 +1,17 @@
 :name: fincen
 :long_name: ICIJ FinCEN Files
-:description: From RDBMS to Graph, using a classic retail dataset
-:icon: 
+:description: Exploring the FinCEN Files Investigation in Neo4j
+:icon:
 :logo: documentation/img/fincen-files-logo.png
-:tags: investigations,finance,fraud,money-laundering
+:tags: example-data,dataset,fincen-data,investigations,finance,money-laundering,icij,fraud-detection
 :author: Michael Hunger
 :use-load-script: scripts/fincen-import.cypher
 :data: import/*.csv
 :use-dump-file: data/fincen-40.dump
-:use-plugin: 
+:use-plugin:
 :target-db-version: 3.5,4.0
 :bloom-perspective: bloom/fincen.bloom-perspective
-:guide: documentation/guide.adoc
+:guide: documentation/fincen.neo4j-browser-guide
 :rendered-guide: https://guides.neo4j.com/sandbox/fincen/index.html
 :model: documentation/img/fincen-datamodel.png
 :example: documentation/img/biggest-filings-browser.png
@@ -24,13 +24,13 @@
 :param-name: country
 :param-value: Russia
 :result-column: originator
-:expected-result: Deutsche Bank
+:expected-result: Rosbank
 
 :model-guide:
 :todo: 
-image::{logo}[width=128]
+image::{logo}[width=100]
 
-= {long_name} Graph Example
+== {long_name} Graph Example
 
 Description: _{description}_
 
@@ -54,7 +54,7 @@ We are https://neo4j.com/blog/analyzing-fincen-files-data-neo4j/[exploring the d
 
 You can access the https://sandbox.neo4j.com?usecase=fincen[Neo4j Sandbox^].
 
-There is a https://youtu.be/xpTYr0Qz7x0[recording^] about exploring the Data and applying Graph Data Science methods.
+There is a https://youtu.be/xpTYr0Qz7x0[recording^] about exploring the data and applying graph data science methods.
 
 === Setup
 
