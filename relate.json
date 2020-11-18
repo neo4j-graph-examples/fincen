@@ -1,0 +1,14 @@
+{
+    "name": "fincen",
+    "description":"Exploring the FinCEN Files Investigation in Neo4j",
+    "install": [
+      {
+          "dumpFile": "data/fincen-35.dump",
+          "targetNeo4jVersion":"3.5"
+      },
+      {
+          "dumpFile": "data/fincen-40.dump",
+          "targetNeo4jVersion": "^4.0"
+      }
+  ]
+}
