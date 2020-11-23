@@ -1,5 +1,5 @@
 :name: fincen
-:long_name: ICIJ FinCEN Files
+:long-name: ICIJ FinCEN Files
 :description: Exploring the FinCEN Files Investigation in Neo4j
 :icon:
 :logo: documentation/img/fincen-files-logo.png
@@ -30,7 +30,7 @@
 :todo: 
 image::{logo}[width=100]
 
-== {long_name} Graph Example
+== {long-name} Graph Example
 
 Description: _{description}_
 

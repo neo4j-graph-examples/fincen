@@ -1,6 +1,7 @@
 {
     "name": "fincen",
     "description":"Exploring the FinCEN Files Investigation in Neo4j",
+    "scriptFile":"scripts/fincen.cypher",
     "install": [
       {
           "dumpFile": "data/fincen-35.dump",
