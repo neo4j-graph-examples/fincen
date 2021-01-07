@@ -8,9 +8,9 @@ driver = GraphDatabase.driver(
   auth=basic_auth("<USERNAME>", "<PASSWORD>"))
 
 cypher_query = '''
-MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country})
-WITH from, to, round(sum(f.amount)) as sum
-ORDER BY sum DESC LIMIT 10
+MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country}) 
+WITH from, to, round(sum(f.amount)) as sum 
+ORDER BY sum DESC LIMIT 10 
 RETURN from.name as originator
 '''
 
