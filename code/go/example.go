@@ -30,9 +30,9 @@ func runQuery(uri, database, username, password string) (result []string, err er
 	results, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
 			`
-			MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country})
-			WITH from, to, round(sum(f.amount)) as sum
-			ORDER BY sum DESC LIMIT 10
+			MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country}) 
+			WITH from, to, round(sum(f.amount)) as sum 
+			ORDER BY sum DESC LIMIT 10 
 			RETURN from.name as originator
 			`, map[string]interface{}{
 				"country": "Russia",
