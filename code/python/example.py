@@ -4,7 +4,7 @@
 from neo4j import GraphDatabase, basic_auth
 
 driver = GraphDatabase.driver(
-  "bolt://<HOST>:<BOLTPORT>", 
+  "bolt://<HOST>:<BOLTPORT>",
   auth=basic_auth("<USERNAME>", "<PASSWORD>"))
 
 cypher_query = '''
@@ -17,8 +17,7 @@ RETURN from.name as originator
 with driver.session(database="neo4j") as session:
   results = session.read_transaction(
     lambda tx: tx.run(cypher_query,
-      country="Russia").data())
-
+                      country="Russia").data())
   for record in results:
     print(record['originator'])
 
