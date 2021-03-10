@@ -18,10 +18,10 @@ namespace dotnet {
 
     var cypherQuery =
       @"
-      MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country}) 
-      WITH from, to, round(sum(f.amount)) as sum 
-      ORDER BY sum DESC LIMIT 10 
-      RETURN from.name as originator
+      MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country})
+       WITH from, to, round(sum(f.amount)) as sum
+       ORDER BY sum DESC LIMIT 10
+       RETURN from.name as originator
       ";
 
     var session = driver.AsyncSession(o => o.WithDatabase("neo4j"));
