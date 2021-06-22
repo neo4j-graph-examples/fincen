@@ -8,6 +8,13 @@
       },
       {
           "dumpFile": "data/fincen-40.dump",
+          "targetNeo4jVersion": "4.0.* - 4.2.*"
+      },
+      {
+          "dumpFile": "data/fincen-43.dump",
+          "targetNeo4jVersion": "^4.3"
+      },
+      {
           "scriptFile":"scripts/fincen.cypher",
           "targetNeo4jVersion": "^4.0"
       }
