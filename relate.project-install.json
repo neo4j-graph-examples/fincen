@@ -4,19 +4,23 @@
     "dbms": [
       {
           "dumpFile": "data/fincen-35.dump",
-          "targetNeo4jVersion":"3.5"
+          "targetNeo4jVersion":"3.5",
+          "plugins": ["apoc", "graph-data-science"]
       },
       {
           "dumpFile": "data/fincen-40.dump",
-          "targetNeo4jVersion": "4.0.* - 4.2.*"
+          "targetNeo4jVersion": "4.0.* - 4.2.*",
+          "plugins": ["apoc", "graph-data-science"]
       },
       {
           "dumpFile": "data/fincen-43.dump",
-          "targetNeo4jVersion": "^4.3"
+          "targetNeo4jVersion": "^4.3",
+          "plugins": ["apoc", "graph-data-science"]
       },
       {
           "scriptFile":"scripts/fincen.cypher",
-          "targetNeo4jVersion": "^4.0"
+          "targetNeo4jVersion": "^4.0",
+          "plugins": ["apoc", "graph-data-science"]
       }
   ]
 }
