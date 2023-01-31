@@ -82,17 +82,28 @@ MERGE (from)-[t:TRANSFERRED]->(to) SET t.amount = sum
 
 == Graph Data Science - Clustering
 
-Now we can run a https://neo4j.com/docs/graph-data-science/current/algorithms/louvain/?ref=sandbox[clustering algorithm like Louvain^].
+First we project our "Transfer" Graph into an in memory model for graph compute, using nodes with the `Entity` label and the `TRANSFERRED` relationship with its `amount` property.
+
 
 [source,cypher]
 ----
-CALL gds.louvain.write({
+CALL gds.graph.project('transfers',{
   nodeProjection: 'Entity',
   relationshipProjection: {
     relType: {type: 'TRANSFERRED', orientation: 'NATURAL',
-      properties: { amount: { property: 'amount', defaultValue: 1 }}
+      properties: { amount: { property: 'amount', defaultValue: 1.0 }}
     }
   },
+});
+----
+
+Now we can run a https://neo4j.com/docs/graph-data-science/current/algorithms/louvain/?ref=sandbox[clustering algorithm like Louvain^].
+
+
+[source,cypher]
+----
+CALL gds.louvain.write('transfers',
+{
   relationshipWeightProperty: 'amount',
   includeIntermediateCommunities: false,
   writeProperty: 'cluster'
@@ -110,17 +121,12 @@ ORDER BY size DESC LIMIT 10;
 
 == Graph Data Science - MoneyTransfer - PageRank
 
-And find the main recipients of the transitively transferred money using the PageRank algorithm.
+Then we can find the main recipients of the transitively transferred money using the PageRank algorithm on the same projected graph.
 
 [source,cypher]
 ----
-CALL gds.pageRank.write({
-  nodeProjection: 'Entity',
-  relationshipProjection: {
-    relType: {type: 'TRANSFERRED', orientation: 'NATURAL',
-      properties: { amount: { property: 'amount', defaultValue: 1 }}
-    }
-  },
+CALL gds.pageRank.write('transfers',
+{
   relationshipWeightProperty: 'amount',
   writeProperty: 'pagerank'
 });

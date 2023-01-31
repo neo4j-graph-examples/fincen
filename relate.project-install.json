@@ -2,25 +2,29 @@
     "name": "fincen",
     "description":"Exploring the FinCEN Files Investigation in Neo4j",
     "dbms": [
-      {
-          "dumpFile": "data/fincen-35.dump",
-          "targetNeo4jVersion":"3.5",
-          "plugins": ["apoc", "graph-data-science"]
-      },
-      {
-          "dumpFile": "data/fincen-40.dump",
-          "targetNeo4jVersion": "4.0.* - 4.2.*",
-          "plugins": ["apoc", "graph-data-science"]
-      },
-      {
-          "dumpFile": "data/fincen-43.dump",
-          "targetNeo4jVersion": "^4.3",
-          "plugins": ["apoc", "graph-data-science"]
-      },
-      {
+        {
+            "dumpFile": "data/fincen-35.dump",
+            "targetNeo4jVersion":">=3.5.0 <4.0.0",
+            "plugins": ["apoc", "graph-data-science"]
+        },
+        {
+            "dumpFile": "data/fincen-40.dump",
+            "targetNeo4jVersion": ">=4.0.0 <4.3.0",
+            "plugins": ["apoc", "graph-data-science"]
+        },
+        {
+            "dumpFile": "data/fincen-43.dump",
+            "targetNeo4jVersion": ">=4.3.0 <5.0.0",
+            "plugins": ["apoc", "graph-data-science"]
+        },
+        {
+            "dumpFile": "data/fincen-50.dump",
+            "targetNeo4jVersion": ">=5.0.0 <6.0.0",
+            "plugins": ["apoc", "graph-data-science"]
+        },
+        {
           "scriptFile":"scripts/fincen.cypher",
-          "targetNeo4jVersion": "^4.0",
-          "plugins": ["apoc", "graph-data-science"]
+          "targetNeo4jVersion": ">=4.0.0"
       }
   ]
 }
