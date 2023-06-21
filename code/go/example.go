@@ -3,14 +3,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	"io"
+	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"reflect"
 )
 
 func main() {
-	results, err := runQuery("bolt://<HOST>:<BOLTPORT>", "neo4j", "<USERNAME>", "<PASSWORD>")
+	results, err := runQuery("neo4j://<HOST>:<BOLTPORT>", "neo4j", "<USERNAME>", "<PASSWORD>")
 	if err != nil {
 		panic(err)
 	}
@@ -19,48 +19,39 @@ func main() {
 	}
 }
 
-func runQuery(uri, database, username, password string) (result []string, err error) {
-	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""))
+func runQuery(uri, database, username, password string) (_ []string, err error) {
+	ctx := context.Background()
+	driver, err := neo4j.NewDriverWithContext(uri, neo4j.BasicAuth(username, password, ""))
 	if err != nil {
 		return nil, err
 	}
-	defer func() {err = handleClose(driver, err)}()
-	session := driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead, DatabaseName: database})
-	defer func() {err = handleClose(session, err)}()
-	results, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		result, err := transaction.Run(
-			`
-			MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country})
-			 WITH from, to, round(sum(f.amount)) as sum
-			 ORDER BY sum DESC LIMIT 10
-			 RETURN from.name as originator
-			`, map[string]interface{}{
-				"country": "Russia",
-			})
+	defer func() { err = handleClose(ctx, driver, err) }()
+	query := "	MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country})
+	 WITH from, to, round(sum(f.amount)) as sum
+	 ORDER BY sum DESC LIMIT 10
+	 RETURN from.name as originator
+	params := map[string]any{"country": "Russia"}
+	result, err := neo4j.ExecuteQuery(ctx, driver, query, params,
+		neo4j.EagerResultTransformer,
+		neo4j.ExecuteQueryWithDatabase(database),
+		neo4j.ExecuteQueryWithReadersRouting())
+	if err != nil {
+		return nil, err
+	}
+	originators := make([]string, len(result.Records))
+	for i, record := range result.Records {
+		// this assumes all actors have names, hence ignoring the 2nd returned value
+		name, _, err := neo4j.GetRecordValue[string](record, "originator")
 		if err != nil {
 			return nil, err
 		}
-		var arr []string
-		for result.Next() {
-			value, found := result.Record().Get("originator")
-			if found {
-				arr = append(arr, value.(string))
-			}
-		}
-		if err = result.Err(); err != nil {
-			return nil, err
-		}
-		return arr, nil
-	})
-	if err != nil {
-		return nil, err
+		originators[i] = name
 	}
-	result = results.([]string)
-	return result, err
+	return originators, nil
 }
 
-func handleClose(closer io.Closer, previousError error) error {
-	err := closer.Close()
+func handleClose(ctx context.Context, closer interface{ Close(context.Context) error }, previousError error) error {
+	err := closer.Close(ctx)
 	if err == nil {
 		return previousError
 	}
