@@ -1,11 +1,7 @@
-# pip3 install neo4j-driver
+# pip3 install neo4j
 # python3 example.py
 
 from neo4j import GraphDatabase, basic_auth
-
-driver = GraphDatabase.driver(
-  "bolt://<HOST>:<BOLTPORT>",
-  auth=basic_auth("<USERNAME>", "<PASSWORD>"))
 
 cypher_query = '''
 MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY]->(c:Country {name:$country})
@@ -14,11 +10,13 @@ MATCH (from:Entity)<-[:ORIGINATOR]-(f:Filing)-[:BENEFITS]->(to:Entity)-[:COUNTRY
  RETURN from.name as originator
 '''
 
-with driver.session(database="neo4j") as session:
-  results = session.read_transaction(
-    lambda tx: tx.run(cypher_query,
-                      country="Russia").data())
-  for record in results:
-    print(record['originator'])
-
-driver.close()
+with GraphDatabase.driver(
+    "neo4j://<HOST>:<BOLTPORT>",
+    auth=("<USERNAME>", "<PASSWORD>")
+) as driver:
+    result = driver.execute_query(
+        cypher_query,
+        country="Russia",
+        database_="neo4j")
+    for record in result.records:
+        print(record['originator'])
